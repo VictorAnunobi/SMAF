@@ -116,53 +116,11 @@ We use three Amazon review datasets with pre-extracted multimodal features for o
 
 ### Dataset Statistics
 
-Dataset
-
-Users
-
-Items
-
-Interactions
-
-Text Features
-
-Image Features
-
-Baby
-
-19,445
-
-7,050
-
-160,792
-
-Sentence-BERT
-
-ResNet-50
-
-Clothing
-
-39,387
-
-23,033
-
-278,677
-
-Sentence-BERT
-
-ResNet-50
-
-Sports
-
-35,598
-
-18,357
-
-296,337
-
-Sentence-BERT
-
-ResNet-50
+| Dataset  | Users  | Items  | Interactions | Text Features  | Image Features |
+|----------|--------|--------|--------------|----------------|----------------|
+| Baby     | 19,445 | 7,050  | 160,792      | Sentence-BERT  | ResNet-50      |
+| Clothing | 39,387 | 23,033 | 278,677      | Sentence-BERT  | ResNet-50      |
+| Sports   | 35,598 | 18,357 | 296,337      | Sentence-BERT  | ResNet-50      |
 
 ## Feature Details
 
@@ -184,9 +142,12 @@ ResNet-50
 
 Each dataset directory follows this structure:
 
-```
-data/{dataset}/├── {dataset}.inter          # User-item interactions (train/val/test splits)├── text_feat.npy            # Text features (Sentence-BERT embeddings, 384d)├── image_feat.npy           # Image features (ResNet-50 features, 4096d)├── u_id_mapping.csv         # User ID to index mapping└── i_id_mapping.csv         # Item ID to index mapping
-```
+data/{dataset}/
+├── {dataset}.inter          # User-item interactions (train/val/test splits)
+├── text_feat.npy            # Text features (Sentence-BERT embeddings, 384d)
+├── image_feat.npy           # Image features (ResNet-50 features, 4096d)
+├── u_id_mapping.csv         # User ID to index mapping
+└── i_id_mapping.csv         # Item ID to index mapping
 
 ## Download Datasets
 
@@ -195,9 +156,10 @@ data/{dataset}/├── {dataset}.inter          # User-item interactions (trai
 [📎 Download from Google Drive](https://drive.google.com/drive/folders/13cBy1EA_saTUuXxVllKgtfci2A09jyaG)
 
 After downloading, extract to the data directory:
-
 ```bash
-unzip baby.zip -d data/baby/unzip clothing.zip -d data/clothing/unzip sports.zip -d data/sports/## Verify Dataset IntegrityAfter downloading and extracting, verify all files are present:```bash# Check if all required files are presentpython -c "import osdatasets = ['baby', 'clothing', 'sports']for ds in datasets:    files = [f'{ds}.inter', 'text_feat.npy', 'image_feat.npy',              'u_id_mapping.csv', 'i_id_mapping.csv']    missing = [f for f in files if not os.path.exists(f'data/{ds}/{f}')]    if missing:        print(f' {ds}: Missing {missing}')    else:        print(f' {ds}: All files present')"
+unzip baby.zip -d data/baby/
+unzip clothing.zip -d data/clothing/
+unzip sports.zip -d data/sports/
 ```
 
 ## Dataset Quality Analysis
@@ -240,7 +202,15 @@ Our paper reports results from three main types of experiments:
 Train the full multimodal SEA model on all datasets:
 
 ```bash
-# Baby datasetcd srcpython main.py --model SEA --dataset baby --gpu 0# Clothing datasetpython main.py --model SEA --dataset clothing --gpu 0# Sports datasetpython main.py --model SEA --dataset sports --gpu 0
+# Baby dataset
+cd src
+python main.py --model SEA --dataset baby --gpu 0
+
+# Clothing dataset
+python main.py --model SEA --dataset clothing --gpu 0
+
+# Sports dataset
+python main.py --model SEA --dataset sports --gpu 0
 ```
 
 ### Experiment 2: Text-Only Ablation (Critical Finding)
@@ -248,7 +218,11 @@ Train the full multimodal SEA model on all datasets:
 This experiment demonstrates that SEA achieves 98.5%+ of its performance using only text features.
 
 ```bash
-# Run text-only experiment for Clothing datasetpython test_text_only.py# For Baby dataset (dedicated script)python test_baby_text_only.py
+# Run text-only experiment for Clothing dataset
+python test_text_only.py
+
+# For Baby dataset (dedicated script)
+python test_baby_text_only.py
 ```
 
 **Expected Results:**
@@ -262,7 +236,10 @@ This experiment demonstrates that SEA achieves 98.5%+ of its performance using o
 Run multiple seeds for statistical rigor (as reported in paper):
 
 ```bash
-# Run 5-seed evaluation for each datasetpython run_focused_experiments.py --dataset baby --num-seeds 5python run_focused_experiments.py --dataset clothing --num-seeds 5python run_focused_experiments.py --dataset sports --num-seeds 5
+# Run 5-seed evaluation for each dataset
+python run_focused_experiments.py --dataset baby --num-seeds 5
+python run_focused_experiments.py --dataset clothing --num-seeds 5
+python run_focused_experiments.py --dataset sports --num-seeds 5
 ```
 
 ### Experiment 4: Statistical Analysis
@@ -270,7 +247,11 @@ Run multiple seeds for statistical rigor (as reported in paper):
 Analyze performance gaps and statistical significance:
 
 ```bash
-# Compute statistical tests, confidence intervals, and effect sizespython analyze_performance_gap.py# Analyze multimodal usage patterns across datasetspython analyze_multimodal_usage.py
+# Compute statistical tests, confidence intervals, and effect sizes
+python analyze_performance_gap.py
+
+# Analyze multimodal usage patterns across datasets
+python analyze_multimodal_usage.py
 ```
 
 This generates:
@@ -285,15 +266,22 @@ This generates:
 Investigate image feature quality issues (important finding in paper):
 
 ```bash
-# Analyze image feature quality across all datasetspython investigate_image_issues.py# This reveals:# - Clothing: 91% missing/zero image features# - Baby: 23% missing image features  # - Sports: 15% missing image features
+# Analyze image feature quality across all datasets
+python investigate_image_issues.py
 ```
+
+This reveals:
+- Clothing: 91% missing/zero image features
+- Baby: 23% missing image features  
+- Sports: 15% missing image features
 
 ### Complete Reproduction Pipeline
 
 For automated reproduction of all experiments:
 
 ```bash
-# Run comprehensive experimental pipeline./run_all_experiments.sh
+# Run comprehensive experimental pipeline.
+/run_all_experiments.sh
 ```
 
 **Runtime Estimate:** 48-72 hours on RTX 3090
@@ -342,29 +330,11 @@ Our implementation uses feature masking rather than architectural changes:
 
 Based on performance retention when using only a single modality:
 
-Retention
-
-Classification
-
-Description
-
->98%
-
-**Pseudo-Multimodal**
-
-Functionally unimodal despite multimodal design
-
-90-98%
-
-**Partially Multimodal**
-
-Some multimodal benefit but imbalanced
-
-<90%
-
-**True Multimodal**
-
-Genuine multimodal learning with synergy
+| Retention | Classification | Description |
+|-----------|----------------|-------------|
+| >98% | **Pseudo-Multimodal** | Functionally unimodal despite multimodal design |
+| 90-98% | **Partially Multimodal** | Some multimodal benefit but imbalanced |
+| <90% | **True Multimodal** | Genuine multimodal learning with synergy |
 
 ### Understanding the Classifications
 
@@ -391,45 +361,11 @@ Genuine multimodal learning with synergy
 
 **SEA is Pseudo-Multimodal**: Text-only ablation retains 98.5%+ of full multimodal performance across all datasets, indicating the model is effectively text-only despite its multimodal architecture.
 
-Dataset
-
-Full Multimodal (Recall@20)
-
-Text-Only (Recall@20)
-
-Image Contribution (Recall@20)
-
-Classification
-
-Baby
-
-0.0474
-
-0.0467
-
-+1.5%
-
-Pseudo-Multimodal
-
-Clothing
-
-0.0441
-
-0.0438
-
--0.8%
-
-Pseudo-Multimodal
-
-Sports
-
-0.0695
-
-0.0689
-
-(+0.7%)
-
-Pseudo-Multimodal
+| Dataset | Full Multimodal (Recall@20) | Text-Only (Recall@20) | Image Contribution (Recall@20) | Classification |
+|---------|-----------------------------|----------------------|-------------------------------|----------------|
+| Baby | 0.0474 | 0.0467 | +1.5% | Pseudo-Multimodal |
+| Clothing | 0.0441 | 0.0438 | -0.8% | Pseudo-Multimodal |
+| Sports | 0.0695 | 0.0689 | (+0.7%) | Pseudo-Multimodal |
 
 ### Implications:
 
@@ -443,25 +379,97 @@ Pseudo-Multimodal
 ### Root Directory
 
 ```
-SMAF_PROJECT/├── README.md                          # Original SEA project README├── requirements.txt                   # Python dependencies and versions├── MULTIMODAL_ANALYSIS_REPORT.md     # Key findings and analysis
+SMAF_PROJECT/
+├── README.md                          # Original SEA project README
+├── requirements.txt                   # Python dependencies and versions
+├── MULTIMODAL_ANALYSIS_REPORT.md     # Key findings and analysis
 ```
 
 ### Source Code (src/)
 
 ```
-src/├── main.py                            # Main training entry point│├── models/                            # Model implementations│   ├── __init__.py│   ├── SEA.py                         # SEA model (full version)│   └── SEA_simple.py                  # Simplified SEA variant│├── common/                            # Core components│   ├── __init__.py│   ├── abstract_recommender.py        # Base recommender class│   ├── encoders.py                    # Feature encoders (text/image)│   ├── trainer.py                     # Training loop implementation│   └── loss.py                        # Loss functions (BPR, contrastive)│├── utils/                             # Utilities and helpers│   ├── __init__.py│   ├── dataloader.py                  # Data loading and batching│   ├── dataset.py                     # Dataset class│   ├── metrics.py                     # Evaluation metrics (Recall, NDCG)│   ├── topk_evaluator.py              # Top-K evaluation│   ├── quick_start.py                 # Training orchestration│   ├── logger.py                      # Logging utilities│   ├── configurator.py                # Configuration management│   ├── data_utils.py                  # Data processing utilities│   ├── fusion_similarity.py           # Feature fusion methods│   ├── adaptive_bpr.py                # Adaptive BPR loss│   ├── svd_completion.py              # SVD-based feature completion│   └── utils.py                       # General utilities│├── configs/                           # Configuration files│   ├── overall.yaml                   # Global training settings│   ├── mg.yaml                        # Mirror Gradient configuration│   ││   ├── dataset/                       # Dataset-specific configs│   │   ├── baby.yaml                  # Baby dataset settings│   │   ├── clothing.yaml              # Clothing dataset settings│   │   ├── sports.yaml                # Sports dataset settings│   │   └── elec.yaml                  # Electronics dataset settings│   ││   └── model/                         # Model-specific configs│       └── SEA.yaml                   # SEA hyperparameters│└── log/                               # Training logs (auto-generated)
+src/
+├── main.py                            # Main training entry point
+│
+├── models/                            # Model implementations
+│   ├── __init__.py
+│   ├── SEA.py                         # SEA model (full version)
+│   └── SEA_simple.py                  # Simplified SEA variant
+│
+├── common/                            # Core components
+│   ├── __init__.py
+│   ├── abstract_recommender.py        # Base recommender class
+│   ├── encoders.py                    # Feature encoders (text/image)
+│   ├── trainer.py                     # Training loop implementation
+│   └── loss.py                        # Loss functions (BPR, contrastive)
+│
+├── utils/                             # Utilities and helpers
+│   ├── __init__.py
+│   ├── dataloader.py                  # Data loading and batching
+│   ├── dataset.py                     # Dataset class
+│   ├── metrics.py                     # Evaluation metrics (Recall, NDCG)
+│   ├── topk_evaluator.py              # Top-K evaluation
+│   ├── quick_start.py                 # Training orchestration
+│   ├── logger.py                      # Logging utilities
+│   ├── configurator.py                # Configuration management
+│   ├── data_utils.py                  # Data processing utilities
+│   ├── fusion_similarity.py           # Feature fusion methods
+│   ├── adaptive_bpr.py                # Adaptive BPR loss
+│   ├── svd_completion.py              # SVD-based feature completion
+│   └── utils.py                       # General utilities
+│
+├── configs/                           # Configuration files
+│   ├── overall.yaml                   # Global training settings
+│   ├── mg.yaml                        # Mirror Gradient configuration
+│   │
+│   ├── dataset/                       # Dataset-specific configs
+│   │   ├── baby.yaml                  # Baby dataset settings
+│   │   ├── clothing.yaml              # Clothing dataset settings
+│   │   ├── sports.yaml                # Sports dataset settings
+│   │   └── elec.yaml                  # Electronics dataset settings
+│   │
+│   └── model/                         # Model-specific configs
+│       └── SEA.yaml                   # SEA hyperparameters
+│
+└── log/                               # Training logs (auto-generated)
 ```
 
 ### Datasets (data/)
 
 ```
-data/├── README.md                          # Dataset documentation and links│├── baby/                              # Baby Products Dataset│   ├── baby.inter                     # User-item interactions│   ├── text_feat.npy                  # Sentence-BERT embeddings (384d)│   ├── image_feat.npy                 # ResNet-50 features (4096d)│   ├── u_id_mapping.csv               # User ID mappings│   └── i_id_mapping.csv               # Item ID mappings│├── clothing/                          # Clothing Dataset│   ├── clothing.inter│   ├── text_feat.npy│   ├── image_feat.npy│   ├── u_id_mapping.csv│   └── i_id_mapping.csv│└── sports/                            # Sports & Outdoors Dataset    ├── sports.inter    ├── text_feat.npy    ├── image_feat.npy    ├── u_id_mapping.csv    └── i_id_mapping.csv
+data/
+├── README.md                          # Dataset documentation and links
+│
+├── baby/                              # Baby Products Dataset
+│   ├── baby.inter                     # User-item interactions
+│   ├── text_feat.npy                  # Sentence-BERT embeddings (384d)
+│   ├── image_feat.npy                 # ResNet-50 features (4096d)
+│   ├── u_id_mapping.csv               # User ID mappings
+│   └── i_id_mapping.csv               # Item ID mappings
+│
+├── clothing/                          # Clothing Dataset
+│   ├── clothing.inter
+│   ├── text_feat.npy
+│   ├── image_feat.npy
+│   ├── u_id_mapping.csv
+│   └── i_id_mapping.csv
+│
+└── sports/                            # Sports & Outdoors Dataset
+    ├── sports.inter
+    ├── text_feat.npy
+    ├── image_feat.npy
+    ├── u_id_mapping.csv
+    └── i_id_mapping.csv
 ```
 
 ### Analysis Scripts (analysis_scripts/)
 
 ```
-analysis_scripts/├── analyze_dataset_characteristics.py  # Dataset statistics & quality├── analyze_multimodal_usage.py        # Cross-dataset modality analysis├── analyze_performance_gap.py         # Statistical significance testing└── investigate_image_issues.py        # Image feature quality analysis
+analysis_scripts/
+├── analyze_dataset_characteristics.py  # Dataset statistics & quality
+├── analyze_multimodal_usage.py        # Cross-dataset modality analysis
+├── analyze_performance_gap.py         # Statistical significance testing
+└── investigate_image_issues.py        # Image feature quality analysis
 ```
 
 ### Experimental & Test Scripts (Root Level)
@@ -469,62 +477,39 @@ analysis_scripts/├── analyze_dataset_characteristics.py  # Dataset statist
 Root level utility scripts:
 
 ```
-├── test_text_only.py                  # Text-only ablation (generic)├── test_baby_text_only.py             # Baby-specific text-only ablation├── test_sea_import.py                 # Import verification script│├── run_focused_experiments.py         # Automated multi-seed experiments├── optimize_sea.py                    # Hyperparameter optimization├── systematic_search.py               # Grid search utility│├── fix_clothing_features.py           # Feature repair attempts├── generate_user_graph.py             # User interaction graph generation│├── analyze_dataset_characteristics.py # (Root copy of analysis script)├── analyze_multimodal_usage.py        # (Root copy of analysis script)├── analyze_performance_gap.py         # (Root copy of analysis script)└── investigate_image_issues.py        # (Root copy of analysis script)
+├── test_text_only.py                  # Text-only ablation (generic)
+├── test_baby_text_only.py             # Baby-specific text-only ablation
+├── test_sea_import.py                 # Import verification script
+│
+├── run_focused_experiments.py         # Automated multi-seed experiments
+├── optimize_sea.py                    # Hyperparameter optimization
+├── systematic_search.py               # Grid search utility
+│
+├── fix_clothing_features.py           # Feature repair attempts
+├── generate_user_graph.py             # User interaction graph generation
+│
+├── analyze_dataset_characteristics.py # (Root copy of analysis script)
+├── analyze_multimodal_usage.py        # (Root copy of analysis script)
+├── analyze_performance_gap.py         # (Root copy of analysis script)
+└── investigate_image_issues.py        # (Root copy of analysis script)
 ```
 
 ### Key File Descriptions
 
-File/Directory
-
-Purpose
-
-`src/main.py`
-
-Main entry point for training SEA model
-
-`src/models/SEA.py`
-
-Core SEA implementation with multimodal learning
-
-`src/common/trainer.py`
-
-Training loop, validation, and checkpointing
-
-`src/utils/dataloader.py`
-
-Handles data loading and batch preparation
-
-`src/configs/*.yaml`
-
-All configuration files for reproducibility
-
-`data/*/text_feat.npy`
-
-Sentence-BERT embeddings (768d → 384d)
-
-`data/*/image_feat.npy`
-
-ResNet-50 visual features (4096d)
-
-`test_text_only.py`
-
-Critical ablation script for text-only experiments
-
-`run_focused_experiments.py`
-
-Automated multi-seed experimental pipeline
-
-`analyze_performance_gap.py`
-
-Statistical analysis with t-tests and effect sizes
-
-`MULTIMODAL_ANALYSIS_REPORT.md`
-
-Primary findings document - pseudo-multimodal discovery
-
-`main_experiment_log/`
-
-Complete training logs from all paper experiments
+| File/Directory | Purpose |
+|---------------|---------|
+| `src/main.py` | Main entry point for training SEA model |
+| `src/models/SEA.py` | Core SEA implementation with multimodal learning |
+| `src/common/trainer.py` | Training loop, validation, and checkpointing |
+| `src/utils/dataloader.py` | Handles data loading and batch preparation |
+| `src/configs/*.yaml` | All configuration files for reproducibility |
+| `data/*/text_feat.npy` | Sentence-BERT embeddings (768d → 384d) |
+| `data/*/image_feat.npy` | ResNet-50 visual features (4096d) |
+| `test_text_only.py` | Critical ablation script for text-only experiments |
+| `run_focused_experiments.py` | Automated multi-seed experimental pipeline |
+| `analyze_performance_gap.py` | Statistical analysis with t-tests and effect sizes |
+| `MULTIMODAL_ANALYSIS_REPORT.md` | Primary findings document - pseudo-multimodal discovery |
+| `main_experiment_log/` | Complete training logs from all paper experiments |
 
 ## 7. Experimental Logs and Results
 
@@ -536,17 +521,16 @@ The `main_experiment_log/` directory contains complete training logs from all ex
 
 #### Paper Results (Table 2)
 
--   `baby_log.log`: Baby dataset full training log
--   `clothing_log.log`: Clothing dataset full training log
--   `Sports_log.log`: Sports dataset full training log
+- `baby_log.log`: Baby dataset full training log
+- `clothing_log.log`: Clothing dataset full training log
+- `Sports_log.log`: Sports dataset full training log
 
 Each log contains:
-
--   Epoch-by-epoch training progress
--   Validation performance metrics
--   Final test set results
--   Complete hyperparameter settings
--   Training time and resource usage
+- Epoch-by-epoch training progress
+- Validation performance metrics
+- Final test set results
+- Complete hyperparameter settings
+- Training time and resource usage
 
 ### Key Findings Documentation
 
@@ -564,45 +548,11 @@ Each log contains:
 
 **Main Finding:**Our ablation experiments revealed that SEA achieves virtually identical performance using only text features:
 
-Dataset
-
-Full Multimodal (Recall@20)
-
-Text-Only (Recall@20)
-
-Image Contribution
-
-Performance Loss
-
-Clothing
-
-0.0131
-
-0.0132
-
--0.0001
-
--0.8%
-
-Baby
-
-0.0474
-
-0.0467
-
-0.0007
-
-1.5%
-
-Sports
-
-0.0273
-
-~0.0271
-
-0.0002
-
-0.7%
+| Dataset | Full Multimodal (Recall@20) | Text-Only (Recall@20) | Image Contribution | Performance Loss |
+|---------|-----------------------------|----------------------|-------------------|------------------|
+| Clothing | 0.0131 | 0.0132 | -0.0001 | -0.8% |
+| Baby | 0.0474 | 0.0467 | 0.0007 | 1.5% |
+| Sports | 0.0273 | ~0.0271 | 0.0002 | 0.7% |
 
 **Key Insights:**
 
@@ -701,7 +651,20 @@ python investigate_image_issues.py
 Edit `src/configs/model/SEA.yaml` to modify model hyperparameters:
 
 ```yaml
-# Embedding dimensionsembedding_size: 64# Number of GNN layersn_mm_layers: 2# Loss function weightsreg_weight: 0.0001       # L2 regularizationalpha_contrast: 0.2      # Contrastive loss weightbeta: 0.01               # Modal distancing weighttemp: 0.2                # Temperature for contrastive learning# Trainingdropout: 0.1
+# Embedding dimensions
+embedding_size: 64
+
+# Number of GNN layers
+n_mm_layers: 2
+
+# Loss function weights
+reg_weight: 0.0001       # L2 regularization
+alpha_contrast: 0.2      # Contrastive loss weight
+beta: 0.01               # Modal distancing weight
+temp: 0.2                # Temperature for contrastive learning
+
+# Training
+dropout: 0.1
 ```
 
 ### Dataset Configuration
@@ -709,7 +672,14 @@ Edit `src/configs/model/SEA.yaml` to modify model hyperparameters:
 Edit `src/configs/dataset/{dataset}.yaml`:
 
 ```yaml
-# Data pathsdata_path: data/clothing/# Featuresuse_text: Trueuse_image: Truetext_dim: 384image_dim: 4096
+# Data paths
+data_path: data/clothing/
+
+# Features
+use_text: True
+use_image: True
+text_dim: 384
+image_dim: 4096
 ```
 
 ### Training Configuration
@@ -717,7 +687,16 @@ Edit `src/configs/dataset/{dataset}.yaml`:
 Edit `src/configs/overall.yaml`:
 
 ```yaml
-# Training parameterslearning_rate: 0.001epochs: 1000batch_size: 2048stopping_step: 25        # Early stopping patience# Evaluationtopk: [5, 10, 20]metrics: ['Recall', 'NDCG']valid_metric: Recall@20
+# Training parameters
+learning_rate: 0.001
+epochs: 1000
+batch_size: 2048
+stopping_step: 25        # Early stopping patience
+
+# Evaluation
+topk: [5, 10, 20]
+metrics: ['Recall', 'NDCG']
+valid_metric: Recall@20
 ```
 
 ## 10. Troubleshooting
@@ -733,7 +712,13 @@ Error: FileNotFoundError: data/baby/baby.inter not found
 **Solution:**
 
 ```bash
-# Verify datasets are in correct locationls data/baby/ls data/clothing/ls data/sports/# Download from Google Drive if missing# https://drive.google.com/drive/folders/13cBy1EA_saTUuXxVllKgtfci2A09jyaG
+# Verify datasets are in correct location
+ls data/baby/
+ls data/clothing/
+ls data/sports/
+
+# Download from Google Drive if missing
+# https://drive.google.com/drive/folders/13cBy1EA_saTUuXxVllKgtfci2A09jyaG
 ```
 
 **Issue 2: CUDA Out of Memory**
@@ -745,7 +730,11 @@ Error: RuntimeError: CUDA out of memory
 **Solution:**
 
 ```bash
-# Reduce batch size in src/main.py or configs/overall.yaml# Default: 2048 → Try: 1024 or 512# Or use CPU (slower)python main.py --gpu -1  # Use CPU
+# Reduce batch size in src/main.py or configs/overall.yaml
+# Default: 2048 → Try: 1024 or 512
+
+# Or use CPU (slower)
+python main.py --gpu -1  # Use CPU
 ```
 
 **Issue 3: Import Errors**
@@ -757,7 +746,12 @@ Error: ModuleNotFoundError: No module named 'utils'
 **Solution:**
 
 ```bash
-# Make sure you're in the src directory when running main.pycd srcpython main.py --dataset baby# Or add to PYTHONPATHexport PYTHONPATH="${PYTHONPATH}:/path/to/SMAF_PROJECT/src"
+# Make sure you're in the src directory when running main.py
+cd src
+python main.py --dataset baby
+
+# Or add to PYTHONPATH
+export PYTHONPATH="${PYTHONPATH}:/path/to/SMAF_PROJECT/src"
 ```
 
 **Issue 4: Different Results****Possible causes:**
@@ -770,7 +764,10 @@ Error: ModuleNotFoundError: No module named 'utils'
 **Verification:**
 
 ```bash
-# Run with multiple seeds and check averagepython run_focused_experiments.py --num-seeds 5# Results should be within ±2% of reported values
+# Run with multiple seeds and check average
+python run_focused_experiments.py --num-seeds 5
+
+# Results should be within ±2% of reported values
 ```
 
 **Issue 5: Feature Files Missing (.icloud)**
@@ -782,7 +779,11 @@ Error: Files like .image_feat.npy.icloud instead of image_feat.npy
 **Solution (macOS iCloud):**
 
 ```bash
-# Download files from iCloudcd data/baby# Click on each .icloud file to download from iCloud# Or disable iCloud for this directory
+# Download files from iCloud
+cd data/baby
+
+# Click on each .icloud file to download from iCloud
+# Or disable iCloud for this directory
 ```
 
 ## 11. Extending to Other Models
@@ -794,19 +795,39 @@ The ablation methodology can be applied to any multimodal recommendation model:
 **Step 1: Prepare Your Model**Ensure your model loads features from files:
 
 ```python
-# Your model should load features like:text_features = np.load('data/your_dataset/text_feat.npy')image_features = np.load('data/your_dataset/image_feat.npy')
+# Your model should load features like:
+text_features = np.load('data/your_dataset/text_feat.npy')
+image_features = np.load('data/your_dataset/image_feat.npy')
 ```
 
 **Step 2: Create Ablation Script**
 
 ```python
-# my_model_ablation.pyimport numpy as npimport shutil# Backup original featuresshutil.copy('data/your_dataset/image_feat.npy',             'data/your_dataset/image_feat_backup.npy')# Zero out image features for text-only testimg_feat = np.load('data/your_dataset/image_feat.npy')np.save('data/your_dataset/image_feat.npy', np.zeros_like(img_feat))# Train your model# ... your training code ...# Restore featuresshutil.copy('data/your_dataset/image_feat_backup.npy',             'data/your_dataset/image_feat.npy')
+# my_model_ablation.py
+import numpy as np
+import shutil
+
+# Backup original features
+shutil.copy('data/your_dataset/image_feat.npy',
+            'data/your_dataset/image_feat_backup.npy')
+
+# Zero out image features for text-only test
+img_feat = np.load('data/your_dataset/image_feat.npy')
+np.save('data/your_dataset/image_feat.npy', np.zeros_like(img_feat))
+
+# Train your model
+# ... your training code ...
+
+# Restore features
+shutil.copy('data/your_dataset/image_feat_backup.npy',
+            'data/your_dataset/image_feat.npy')
 ```
 
 **Step 3: Run Statistical Analysis**Use our analysis scripts:
 
 ```bash
-# Adapt analyze_performance_gap.py for your resultspython analyze_performance_gap.py --your-model-results
+# Adapt analyze_performance_gap.py for your results
+python analyze_performance_gap.py --your-model-results
 ```
 
 ## 12. Citation
@@ -814,13 +835,25 @@ The ablation methodology can be applied to any multimodal recommendation model:
 If you use this code, framework, or findings in your research, please cite:
 
 ```bibtex
-@inproceedings{  title={A Systematic Framework for Testing Multimodal Feature Contribution in Recommendation Systems},  author={Wang Jifang and Anunobi Victor Chibueze},  booktitle={The 3rd International Conference on Networks, Communications and Intelligent Computing (NCIC 2025)},  year={2025},  month={October},  address={Jiaozuo, China}}
+@inproceedings{
+  title={A Systematic Framework for Testing Multimodal Feature Contribution in Recommendation Systems},
+  author={Wang Jifang and Anunobi Victor Chibueze},
+  booktitle={The 3rd International Conference on Networks, Communications and Intelligent Computing (NCIC 2025)},
+  year={2025},
+  month={October},
+  address={Jiaozuo, China}
+}
 ```
 
 **Original SEA Model:**
 
 ```bibtex
-@inproceedings{  title={It is Never Too Late to Mend: Separate Learning for Multimedia Recommendation},  author={Wei, Yongxu and others},  booktitle={Proceedings of ACM Conference},  year={2023}}
+@inproceedings{
+  title={It is Never Too Late to Mend: Separate Learning for Multimedia Recommendation},
+  author={Wei, Yongxu and others},
+  booktitle={Proceedings of ACM Conference},
+  year={2023}
+}
 ```
 
 ## 13. Contact Information
