@@ -1,0 +1,24 @@
+embedding_size: 128 # Moderate size for stable training
+feat_embed_dim: 128 # Match embedding_size
+
+n_mm_layers: 2 # Moderate depth for item graph learning
+n_layers: 2
+knn_k: 10
+mm_image_weight: 0.1
+learning_rate: [0.001] # Conservative learning rate
+reg_weight: [0.0]
+
+# Conservative dropout
+dropout: [0.1]
+
+# Moderate alignment weight
+alpha_contrast: [0.2]
+
+# Moderate temperature scaling
+temp: [0.2]
+
+# Conservative distancing weight
+beta: [0.005] # Will be overridden by main.py for each dataset
+
+hyper_parameters:
+  ["reg_weight", "learning_rate", "dropout", "alpha_contrast", "temp", "beta"]

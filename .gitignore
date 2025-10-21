@@ -1,0 +1,37 @@
+
+# Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
+
+# Ignore large dataset files (users can download from Google Drive)
+data/*/baby.inter
+data/*/clothing.inter
+data/*/sports.inter
+data/*/*.npy
+data/*/text_feat.npy
+data/*/image_feat.npy
+
+# Keep only README and mapping files
+!data/README.md
+!data/*/*.csv
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Logs
+*.log
+src/log/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
