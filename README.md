@@ -18,128 +18,97 @@ Conclusion: Our findings challenge fundamental assumptions about multimodal effe
 
 Keywords: Multimodal Recommendation, Ablation Studies, Feature Fusion, Evaluation Methodology, Systematic Evaluation
 
-# Overview
+# Supplementary Materials
+
+## Overview
+
 This supplementary package contains all materials necessary to reproduce the experimental results reported in our paper. We provide the complete source code, datasets, experimental scripts, and detailed documentation for applying the Systematic Multimodal Ablation Framework (SMAF) to multimodal recommendation systems.
 
-# Contents of Supplementary Materials
-Source Code: Complete SEA model implementation with ablation experiment scripts
+### Contents of Supplementary Materials
+- **Source Code**: Complete SEA model implementation with ablation experiment scripts
+- **Datasets**: Amazon review datasets (Baby, Clothing, Sports & Outdoors) with extracted features
+- **Experimental Logs**: Complete training logs from all experiments reported in the paper
+- **Analysis Scripts**: Tools for dataset analysis, performance evaluation, and statistical testing
+- **Documentation**: Methodology paper draft and detailed experimental reports
 
-Datasets: Amazon review datasets (Baby, Clothing, Sports & Outdoors) with extracted features
+## Table of Contents
+1. [System Requirements](#1-system-requirements)
+2. [Installation Instructions](#2-installation-instructions)
+3. [Dataset Preparation](#3-dataset-preparation)
+4. [Reproducing Paper Results](#4-reproducing-paper-results)
+5. [Understanding the SMAF Methodology](#5-understanding-the-smaf-methodology)
+6. [File Structure](#6-file-structure)
+7. [Experimental Logs and Results](#7-experimental-logs-and-results)
+8. [Analysis Tools](#8-analysis-tools)
+9. [Configuration and Customization](#9-configuration-and-customization)
+10. [Troubleshooting](#10-troubleshooting)
+11. [Extending to Other Models](#11-extending-to-other-models)
+12. [Citation](#12-citation)
+13. [Contact Information](#13-contact-information)
+14. [Acknowledgments](#14-acknowledgments)
+15. [License](#15-license)
+16. [FAQ](#16-faq)
 
-Experimental Logs: Complete training logs from all experiments reported in the paper
+## 1. System Requirements
 
-Analysis Scripts: Tools for dataset analysis, performance evaluation, and statistical testing
-
-# Table of Contents
-1. System Requirements
-2. Installation Instructions
-3. Dataset Preparation
-4. Reproducing Paper Results
-5. Understanding the SMAF Methodology
-6. File Structure
-7. Experimental Logs and Results
-8. Analysis Tools
-9. Configuration and Customization
-10. Troubleshooting
-11. Extending to Other Models
-12. Citation
-13. Contact Information
-14. Acknowledgments
-15. License
-16. FAQ
-
-# 1. System Requirements
 ### Hardware Requirements
-CPU: Intel Core i7 or equivalent (multi-core recommended)
-
-RAM: Minimum 16GB (32GB recommended for all three datasets)
-
-GPU: NVIDIA GPU with CUDA support (strongly recommended)
-
-Minimum: GTX 1080 Ti (11GB VRAM)
-
-Recommended: RTX 3090 or A100 (24GB+ VRAM)
-
-Storage: At least 20GB free disk space for datasets and logs
+- **CPU**: Intel Core i7 or equivalent (multi-core recommended)
+- **RAM**: Minimum 16GB (32GB recommended for all three datasets)
+- **GPU**: NVIDIA GPU with CUDA support (strongly recommended)
+  - **Minimum**: GTX 1080 Ti (11GB VRAM)
+  - **Recommended**: RTX 3090 or A100 (24GB+ VRAM)
+- **Storage**: At least 20GB free disk space for datasets and logs
 
 ### Software Requirements
-Operating System: Linux (Ubuntu 18.04+), macOS (10.14+), or Windows 10/11
-
-Python: Version 3.7.x (as specified in requirements.txt)
-
-CUDA: Version 10.2 or 11.x (if using GPU)
-
-Package Manager: pip or conda
+- **Operating System**: Linux (Ubuntu 18.04+), macOS (10.14+), or Windows 10/11
+- **Python**: Version 3.7.x (as specified in requirements.txt)
+- **CUDA**: Version 10.2 or 11.x (if using GPU)
+- **Package Manager**: pip or conda
 
 ### Computational Time Estimates
 Based on NVIDIA RTX 3090:
+- **Full baseline training** (single dataset): 2-4 hours
+- **Text-only ablation** (single dataset): 2-4 hours
+- **Complete ablation study** (all datasets, 5 seeds): 48-72 hours
+- **Dataset analysis scripts**: 10-30 minutes
 
-Full baseline training (single dataset): 2-4 hours
+## 2. Installation Instructions
 
-Text-only ablation (single dataset): 2-4 hours
-
-Complete ablation study (all datasets, 5 seeds): 48-72 hours
-
-Dataset analysis scripts: 10-30 minutes
-
-# 2. Installation Instructions
 ### Step 1: Extract the Supplementary Materials
-
-Extract the archive
-
+```bash
+# Extract the archive
 unzip SMAF_PROJECT-supplementary.zip
-
 cd SMAF_PROJECT
+```
 
 ### Step 2: Create Python Environment (Recommended)
-
-Using conda (recommended)
-
+```bash
+# Using conda (recommended)
 conda create -n smaf python=3.7.11
-
 conda activate smaf
 
-Or using venv
-
+# Or using venv
 python3.7 -m venv smaf_env
-
-source smaf_env/bin/activate 
-
-On Linux/macOS
-
-smaf_env
-
-Scriptsactivate  
-
-On Windows
+source smaf_env/bin/activate  # On Linux/macOS
+# smaf_env\Scripts\activate  # On Windows
+```
 
 ### Step 3: Install Dependencies
-
-Install all required packages
-
+```bash
+# Install all required packages
 pip install -r requirements.txt
 
-### Verify PyTorch installation
+# Verify PyTorch installation
+python -c "import torch; print('PyTorch version:', torch.__version__)"
+python -c "import torch; print('CUDA available:', torch.cuda.is_available())"
+```
 
-python -c "import torch; 
-
-print('PyTorch version:', torch.__version__)"
-
-python -c "import torch; 
-
-print('CUDA available:', torch.cuda.is_available())"
-
-### Note: The requirements.txt specifies:
-
-1.numpy==1.21.5
-
-2. pandas==1.3.5
-
-3. scipy==1.7.3
-
-4. torch==1.11.0
-
-5. pyyaml==6.0
+#### Note: The requirements.txt specifies:
+- numpy==1.21.5
+- pandas==1.3.5
+- scipy==1.7.3
+- torch==1.11.0
+- pyyaml==6.0
 
 # 3. Dataset Preparation
 ## Dataset Overview
