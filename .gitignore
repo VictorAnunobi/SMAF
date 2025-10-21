@@ -1,7 +1,3 @@
-
-# Ignore vscode AI rules
-.github/instructions/codacy.instructions.md
-
 # Ignore large dataset files (users can download from Google Drive)
 data/*/baby.inter
 data/*/clothing.inter
