@@ -208,7 +208,7 @@ These feature quality issues significantly impact the multimodal learning capabi
 ### Overview of Experiments
 Our paper reports results from three main types of experiments:
 
-- **Baseline Multimodal Performance** (Table 1 in paper)
+- **Baseline Multimodal Performance** (Table 2 in paper)
 - **Text-Only Ablation** (Table 2 in paper)
 - **Image-Only Ablation** (Table 2 in paper)
 - **Statistical Significance Analysis** (Table 3 in paper)
