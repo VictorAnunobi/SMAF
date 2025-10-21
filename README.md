@@ -837,7 +837,7 @@ For questions, issues, or collaboration:
 - Anunobi Victor Chibueze (522309010004@home.hpu.edu.cn)
 
 **Conference:** NCIC 2025, Jiaozuo, China  
-**Project Repository:** 
+**Project Repository:**[📎https://github.com/VictorAnunobi/SMAF.git]
 
 ## 14. Acknowledgments
 
