@@ -883,16 +883,23 @@ This code is released for academic and research purposes. For commercial use, pl
 
 ## 16. FAQ
 
-**Q: What is the main finding of this work?**A: SEA, a state-of-the-art "multimodal" recommender, achieves 98.5%+ of its performance using only text features. Image features contribute <2%, making it effectively text-only despite multimodal design.
+**Q: What is the main finding of this work?**  
+A: SEA, a state-of-the-art “multimodal” recommender, achieves 98.5 %+ of its performance using only text features. Image features contribute <2 %, making it effectively text-only despite multimodal design.
 
-**Q: How long does it take to reproduce all experiments?**A: Approximately 48-72 hours on a modern GPU (RTX 3090 or equivalent) for all datasets with 5 seeds each.
+**Q: How long does it take to reproduce all experiments?**  
+A: Approximately 48–72 hours on a modern GPU (RTX 3090 or equivalent) for all datasets with 5 seeds each.
 
-**Q: Do I need the exact same hardware?**A: No, but GPU is strongly recommended. CPU-only would take weeks. Results may vary slightly across hardware but findings remain consistent.
+**Q: Do I need the exact same hardware?**  
+A: No, but GPU is strongly recommended. CPU-only would take weeks. Results may vary slightly across hardware but findings remain consistent.
 
-**Q: Can I use this framework with other models?**A: Yes! The SMAF methodology (feature masking + statistical testing) works with any multimodal model. See Section 11.
+**Q: Can I use this framework with other models?**  
+A: Yes! The SMAF methodology (feature masking + statistical testing) works with any multimodal model. See Section 11.
 
-**Q: Why are my results slightly different?**A: Small variations (±2%) are normal due to random seed differences and hardware variations. Use multiple seeds and statistical testing.
+**Q: Why are my results slightly different?**  
+A: Small variations (±2 %) are normal due to random-seed differences and hardware variations. Use multiple seeds and statistical testing.
 
-**Q: What if I don't have access to the datasets?**A: Download from the provided Google Drive link. The datasets are publicly available Amazon review data with pre-extracted features.
+**Q: What if I don't have access to the datasets?**  
+A: Download from the provided Google Drive link. The datasets are publicly available Amazon-review data with pre-extracted features.
 
-**Q: How do I know if my model is pseudo-multimodal?**A: Run the ablation experiments. If single-modality performance retains >98% of baseline, your model is pseudo-multimodal.
+**Q: How do I know if my model is pseudo-multimodal?**  
+A: Run the ablation experiments. If single-modality performance retains >98 % of baseline, your model is pseudo-multimodal.
