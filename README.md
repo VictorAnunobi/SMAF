@@ -229,13 +229,6 @@ python main.py --model SEA --dataset clothing --gpu 0
 python main.py --model SEA --dataset sports --gpu 0
 ```
 
-**Expected Results (Recall@20):**
-- Baby: ~0.0639 ± 0.0008
-- Clothing: ~0.0441 ± 0.0012
-- Sports: ~0.0695 ± 0.0009
-
-Results will be saved to: `src/log/SEA_baseline_{dataset}/`
-
 ### Experiment 2: Text-Only Ablation (Critical Finding)
 This experiment demonstrates that SEA achieves 98.5%+ of its performance using only text features.
 
@@ -372,11 +365,11 @@ Based on performance retention when using only a single modality:
 
 **SEA is Pseudo-Multimodal**: Text-only ablation retains 98.5%+ of full multimodal performance across all datasets, indicating the model is effectively text-only despite its multimodal architecture.
 
-| Dataset | Full Multimodal | Text-Only | Image Contribution | Classification |
+| Dataset | Full Multimodal (Recall@20) | Text-Only (Recall@20) | Image Contribution (Recall@20) | Classification |
 |---------|-----------------|-----------|-------------------|----------------|
-| Baby | 0.0639 | 0.0632 | 1.1% | Pseudo-Multimodal |
-| Clothing | 0.0441 | 0.0438 | 0.7% | Pseudo-Multimodal |
-| Sports | 0.0695 | 0.0689 | 0.9% | Pseudo-Multimodal |
+| Baby | 0.0474 | 0.0467 | +1.5% | Pseudo-Multimodal |
+| Clothing | 0.0441 | 0.0438 | -0.8%| Pseudo-Multimodal |
+| Sports | 0.0695 | 0.0689 | (+0.7%) | Pseudo-Multimodal |
 
 ### Implications:
 
@@ -385,26 +378,14 @@ Based on performance retention when using only a single modality:
 - This challenges assumptions about multimodal learning in recommendation systems
 - Suggests need for better multimodal fusion strategies or higher-quality image features
 
-### Summary Table
-
-| Dataset | Full Multimodal | Text-Only | Image Contribution | Classification |
-|---------|-----------------|-----------|-------------------|----------------|
-| Baby | 0.0639 | 0.0632 | 1.1% | Pseudo-Multimodal |
-| Clothing | 0.0441 | 0.0438 | 0.7% | Pseudo-Multimodal |
-| Sports | 0.0695 | 0.0689 | 0.9% | Pseudo-Multimodal |
-
 ## 6. File Structure
 
 ### Root Directory
 ```
 SMAF_PROJECT/
 ├── README.md                          # Original SEA project README
-├── SUPPLEMENTARY_README.md           # This file - comprehensive documentation
 ├── requirements.txt                   # Python dependencies and versions
-│
-├── METHODOLOGY_PAPER_DRAFT.md        # Complete methodology paper
 ├── MULTIMODAL_ANALYSIS_REPORT.md     # Key findings and analysis
-└── PROJECT_PROGRESS_REPORT.md        # Development history and iterations
 ```
 
 ### Source Code (src/)
@@ -480,19 +461,6 @@ data/
     ├── image_feat.npy
     ├── u_id_mapping.csv
     └── i_id_mapping.csv
-```
-
-### Experimental Logs (main_experiment_log/)
-```
-main_experiment_log/
-├── Readme.md                          # Log documentation
-│
-├── baby_log.log                       # Baby dataset training logs
-├── clothing_log.log                   # Clothing dataset training logs
-├── Sports_log.log                     # Sports dataset training logs
-│
-├── VBPR+SEA.log                       # VBPR with SMAF framework
-└── FREEDOM+SEA.log                    # FREEDOM with SMAF framework
 ```
 
 ### Analysis Scripts (analysis_scripts/)
@@ -577,9 +545,9 @@ Our ablation experiments revealed that SEA achieves virtually identical performa
 
 | Dataset | Full Multimodal (Recall@20) | Text-Only (Recall@20) | Image Contribution | Performance Loss |
 |---------|-----------------------------|----------------------|-------------------|------------------|
-| Clothing | 0.0131 | 0.0132 | +0.0001 | 0% |
-| Baby | 0.0474 | 0.0467 | -0.0007 | 1.5% |
-| Sports | 0.0273 | ~0.0273 | <0.0010 | <2% |
+| Clothing | 0.0131 | 0.0132 | -0.0001 | -0.8% |
+| Baby | 0.0474 | 0.0467 | 0.0007 | 1.5% |
+| Sports | 0.0273 | ~0.0271 | 0.0002 | 0.7% |
 
 **Key Insights:**
 - **Text-only performance matches or exceeds multimodal**: In Clothing dataset, text-only slightly outperforms full multimodal
@@ -590,7 +558,7 @@ Our ablation experiments revealed that SEA achieves virtually identical performa
 **Statistical Significance:**
 - Paired t-tests confirm differences are statistically insignificant (p > 0.05)
 - Cohen's d effect sizes near zero, indicating no practical significance
-- 95% confidence intervals for image contribution: [-0.5%, +2.0%]
+- 95% confidence intervals for image contribution
 
 **Architectural Analysis:**
 The report includes detailed analysis of:
@@ -845,7 +813,7 @@ python analyze_performance_gap.py --your-model-results
 If you use this code, framework, or findings in your research, please cite:
 
 ```bibtex
-@inproceedings{wang2025smaf,
+@inproceedings{
   title={A Systematic Framework for Testing Multimodal Feature Contribution in Recommendation Systems},
   author={Wang Jifang and Anunobi Victor Chibueze},
   booktitle={The 3rd International Conference on Networks, Communications and Intelligent Computing (NCIC 2025)},
@@ -857,7 +825,7 @@ If you use this code, framework, or findings in your research, please cite:
 
 **Original SEA Model:**
 ```bibtex
-@inproceedings{wei2023sea,
+@inproceedings{
   title={It is Never Too Late to Mend: Separate Learning for Multimedia Recommendation},
   author={Wei, Yongxu and others},
   booktitle={Proceedings of ACM Conference},
