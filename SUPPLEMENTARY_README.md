@@ -208,7 +208,7 @@ Download the preprocessed datasets from our Google Drive:
 After downloading and extracting, verify all files are present:
 
 ```bash
-# Check if all required files are presentpython -c "import osdatasets = ['baby', 'clothing', 'sports']for ds in datasets:    files = [f'{ds}.inter', 'text_feat.npy', 'image_feat.npy',             'u_id_mapping.csv', 'i_id_mapping.csv']    missing = [f for f in files if not os.path.exists(f'data/{ds}/{f}')]    if missing:        print(f'❌ {ds}: Missing {missing}')    else:        print(f'✅ {ds}: All files present')"
+# Check if all required files are presentpython -c "import osdatasets = ['baby', 'clothing', 'sports']for ds in datasets:    files = [f'{ds}.inter', 'text_feat.npy', 'image_feat.npy',             'u_id_mapping.csv', 'i_id_mapping.csv']    missing = [f for f in files if not os.path.exists(f'data/{ds}/{f}')]    if missing:        print(f'ERROR - {ds}: Missing {missing}')    else:        print(f'SUCCESS - {ds}: All files present')"
 ```
 
 ### Dataset Quality Analysis
@@ -364,10 +364,10 @@ Our implementation uses **feature masking** rather than architectural changes:
 
 This approach ensures:
 
--   ✅ No code modifications needed
--   ✅ Identical model architecture across experiments
--   ✅ Clean isolation of modality contributions
--   ✅ Easy reproducibility
+- No code modifications needed
+- Identical model architecture across experiments
+- Clean isolation of modality contributions
+- Easy reproducibility
 
 ### Classification Criteria (from paper)
 

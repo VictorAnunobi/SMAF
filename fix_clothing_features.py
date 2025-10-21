@@ -18,7 +18,7 @@ def analyze_feature_corruption(dataset_name):
     img_file = f"data/{dataset_name}/image_feat.npy"
     
     if not os.path.exists(img_file):
-        print(f"❌ {img_file} not found")
+        print(f"ERROR: {img_file} not found")
         return None
     
     img_feat = np.load(img_file)
@@ -28,7 +28,7 @@ def analyze_feature_corruption(dataset_name):
     zero_count = zero_rows.sum()
     total_items = img_feat.shape[0]
     
-    print(f"\n📊 {dataset_name.upper()} IMAGE FEATURE ANALYSIS:")
+    print(f"\n{dataset_name.upper()} IMAGE FEATURE ANALYSIS:")
     print(f"   Total items: {total_items}")
     print(f"   Items with all-zero features: {zero_count} ({zero_count/total_items*100:.1f}%)")
     print(f"   Items with valid features: {total_items - zero_count} ({(total_items-zero_count)/total_items*100:.1f}%)")
@@ -53,15 +53,15 @@ def analyze_feature_corruption(dataset_name):
 def strategy_1_mean_imputation(features_info, dataset_name):
     """Strategy 1: Replace zero features with mean of valid features"""
     if features_info['valid_features'] is None:
-        print("❌ No valid features found for mean imputation")
+        print("ERROR: No valid features found for mean imputation")
         return None
     
-    print(f"\n🔧 STRATEGY 1: Mean Imputation for {dataset_name}")
+    print(f"\nSTRATEGY 1: Mean Imputation for {dataset_name}")
     
     # Create backup
     backup_name = f"data/{dataset_name}/image_feat_original_{datetime.now().strftime('%Y%m%d_%H%M%S')}.npy"
     shutil.copy(f"data/{dataset_name}/image_feat.npy", backup_name)
-    print(f"   ✅ Backup created: {backup_name}")
+    print(f"   Backup created: {backup_name}")
     
     # Calculate mean of valid features
     mean_feature = features_info['valid_features'].mean(axis=0)
@@ -74,29 +74,29 @@ def strategy_1_mean_imputation(features_info, dataset_name):
     output_file = f"data/{dataset_name}/image_feat_mean_imputed.npy"
     np.save(output_file, fixed_features)
     
-    print(f"   ✅ Fixed features saved: {output_file}")
-    print(f"   📊 Replaced {features_info['zero_count']} zero rows with mean feature")
+    print(f"   Fixed features saved: {output_file}")
+    print(f"   Replaced {features_info['zero_count']} zero rows with mean feature")
     
     # Verify fix
     verify_features = np.load(output_file)
     zero_rows_after = (verify_features == 0).all(axis=1).sum()
-    print(f"   ✅ Verification: {zero_rows_after} zero rows remaining (should be 0)")
+    print(f"   Verification: {zero_rows_after} zero rows remaining (should be 0)")
     
     return output_file
 
 def strategy_2_random_sampling(features_info, dataset_name):
     """Strategy 2: Replace zero features with random sampling from valid features"""
     if features_info['valid_features'] is None:
-        print("❌ No valid features found for random sampling")
+        print("ERROR: No valid features found for random sampling")
         return None
     
-    print(f"\n🔧 STRATEGY 2: Random Sampling for {dataset_name}")
+    print(f"\nSTRATEGY 2: Random Sampling for {dataset_name}")
     
     # Create backup if not already done
     backup_name = f"data/{dataset_name}/image_feat_original_{datetime.now().strftime('%Y%m%d_%H%M%S')}.npy"
     if not os.path.exists(backup_name):
         shutil.copy(f"data/{dataset_name}/image_feat.npy", backup_name)
-        print(f"   ✅ Backup created: {backup_name}")
+        print(f"   Backup created: {backup_name}")
     
     # Replace zero rows with random valid features
     fixed_features = features_info['features'].copy()
@@ -115,25 +115,25 @@ def strategy_2_random_sampling(features_info, dataset_name):
     output_file = f"data/{dataset_name}/image_feat_random_sampled.npy"
     np.save(output_file, fixed_features)
     
-    print(f"   ✅ Fixed features saved: {output_file}")
-    print(f"   📊 Replaced {features_info['zero_count']} zero rows with random samples")
+    print(f"   Fixed features saved: {output_file}")
+    print(f"   Replaced {features_info['zero_count']} zero rows with random samples")
     
     # Verify fix
     verify_features = np.load(output_file)
     zero_rows_after = (verify_features == 0).all(axis=1).sum()
-    print(f"   ✅ Verification: {zero_rows_after} zero rows remaining (should be 0)")
+    print(f"   Verification: {zero_rows_after} zero rows remaining (should be 0)")
     
     return output_file
 
 def strategy_3_learned_embeddings(features_info, dataset_name):
     """Strategy 3: Use small random embeddings (will be learned during training)"""
-    print(f"\n🔧 STRATEGY 3: Learned Embeddings for {dataset_name}")
+    print(f"\nSTRATEGY 3: Learned Embeddings for {dataset_name}")
     
     # Create backup if not already done
     backup_name = f"data/{dataset_name}/image_feat_original_{datetime.now().strftime('%Y%m%d_%H%M%S')}.npy"
     if not os.path.exists(backup_name):
         shutil.copy(f"data/{dataset_name}/image_feat.npy", backup_name)
-        print(f"   ✅ Backup created: {backup_name}")
+        print(f"   Backup created: {backup_name}")
     
     # Replace zero rows with small random values (will be learned)
     fixed_features = features_info['features'].copy()
@@ -150,20 +150,20 @@ def strategy_3_learned_embeddings(features_info, dataset_name):
     output_file = f"data/{dataset_name}/image_feat_learned_init.npy"
     np.save(output_file, fixed_features)
     
-    print(f"   ✅ Fixed features saved: {output_file}")
-    print(f"   📊 Replaced {features_info['zero_count']} zero rows with learnable embeddings")
+    print(f"   Fixed features saved: {output_file}")
+    print(f"   Replaced {features_info['zero_count']} zero rows with learnable embeddings")
     
     # Verify fix
     verify_features = np.load(output_file)
     zero_rows_after = (verify_features == 0).all(axis=1).sum()
-    print(f"   ✅ Verification: {zero_rows_after} zero rows remaining (should be 0)")
+    print(f"   Verification: {zero_rows_after} zero rows remaining (should be 0)")
     
     return output_file
 
 def main():
     """Main function to fix clothing dataset image features"""
     print("=" * 80)
-    print("🔧 CLOTHING DATASET IMAGE FEATURE REPAIR")
+    print("CLOTHING DATASET IMAGE FEATURE REPAIR")
     print("Fixing 91% zero image features that cause poor performance")
     print("=" * 80)
     
@@ -171,11 +171,11 @@ def main():
     clothing_info = analyze_feature_corruption('clothing')
     
     if clothing_info is None:
-        print("❌ Could not analyze clothing features")
+        print("ERROR: Could not analyze clothing features")
         return
     
     if clothing_info['zero_count'] == 0:
-        print("✅ No zero features found - nothing to fix!")
+        print("SUCCESS: No zero features found - nothing to fix!")
         return
     
     # Apply all three strategies
@@ -197,19 +197,19 @@ def main():
         strategies.append(('learned_init', learned_file))
     
     print(f"\n{'=' * 60}")
-    print("🎯 REPAIR COMPLETE - NEXT STEPS")
+    print("REPAIR COMPLETE - NEXT STEPS")
     print(f"{'=' * 60}")
     
-    print(f"\n✅ Created {len(strategies)} fixed versions:")
+    print(f"\nCreated {len(strategies)} fixed versions:")
     for name, filepath in strategies:
         print(f"   - {name}: {filepath}")
     
-    print(f"\n🚀 RECOMMENDED TESTING ORDER:")
+    print(f"\nRECOMMENDED TESTING ORDER:")
     print(f"1. Test learned_init version first (most principled)")
     print(f"2. Test mean_imputed version if learned_init doesn't work")
     print(f"3. Test random_sampled version as fallback")
     
-    print(f"\n📝 TO TEST A VERSION:")
+    print(f"\nTO TEST A VERSION:")
     print(f"   # Backup current version")
     print(f"   cp data/clothing/image_feat.npy data/clothing/image_feat_broken.npy")
     print(f"   ")

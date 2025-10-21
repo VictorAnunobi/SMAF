@@ -24,10 +24,10 @@ def analyze_interaction_data(dataset_name):
     inter_file = f"data/{dataset_name}/{dataset_name}.inter"
     
     if not os.path.exists(inter_file):
-        print(f"❌ {inter_file} not found")
+        print(f"ERROR: {inter_file} not found")
         return None
     
-    print(f"\n📊 Analyzing {dataset_name} interaction data...")
+    print(f"\nAnalyzing {dataset_name} interaction data...")
     
     # Read interaction data
     data = pd.read_csv(inter_file, sep='\t')
@@ -68,7 +68,7 @@ def analyze_feature_data(dataset_name):
     features = {}
     
     if os.path.exists(image_file):
-        print(f"\n🖼️  Analyzing {dataset_name} image features...")
+        print(f"\nAnalyzing {dataset_name} image features...")
         img_feat = np.load(image_file)
         features['image'] = {
             'shape': img_feat.shape,
@@ -85,7 +85,7 @@ def analyze_feature_data(dataset_name):
         features['image']['per_dim_mean'] = img_feat.mean(axis=0).mean()
         
     if os.path.exists(text_file):
-        print(f"\n📝 Analyzing {dataset_name} text features...")
+        print(f"\nAnalyzing {dataset_name} text features...")
         text_feat = np.load(text_file)
         features['text'] = {
             'shape': text_feat.shape,
@@ -113,7 +113,7 @@ def compare_datasets():
     }
     
     print("=" * 80)
-    print("🔍 DATASET CHARACTERISTICS ANALYSIS")
+    print("DATASET CHARACTERISTICS ANALYSIS")
     print("Investigating why Baby dataset achieves near-paper performance")
     print("=" * 80)
     
@@ -123,7 +123,7 @@ def compare_datasets():
     for dataset in datasets:
         print(f"\n{'=' * 20} {dataset.upper()} DATASET {'=' * 20}")
         perf = performance[dataset]
-        print(f"📈 Performance: Recall@20={perf['recall20']:.4f}, Gap={perf['gap_ratio']:.1f}x")
+        print(f"Performance: Recall@20={perf['recall20']:.4f}, Gap={perf['gap_ratio']:.1f}x")
         
         # Analyze interactions
         stats, user_activity, item_popularity = analyze_interaction_data(dataset)
@@ -135,18 +135,18 @@ def compare_datasets():
     
     # Create comparison summary
     print(f"\n{'=' * 60}")
-    print("📊 COMPARATIVE ANALYSIS SUMMARY")
+    print("COMPARATIVE ANALYSIS SUMMARY")
     print(f"{'=' * 60}")
     
     # Performance comparison
-    print("\n🎯 PERFORMANCE RANKING:")
+    print("\nPERFORMANCE RANKING:")
     sorted_datasets = sorted(datasets, key=lambda d: performance[d]['recall20'], reverse=True)
     for i, dataset in enumerate(sorted_datasets, 1):
         perf = performance[dataset]
         print(f"{i}. {dataset.upper()}: Recall@20={perf['recall20']:.4f} (Gap: {perf['gap_ratio']:.1f}x)")
     
     # Key characteristics comparison
-    print(f"\n📈 INTERACTION CHARACTERISTICS:")
+    print(f"\nINTERACTION CHARACTERISTICS:")
     print(f"{'Dataset':<10} {'Users':<8} {'Items':<8} {'Interactions':<12} {'Sparsity':<10} {'Avg/User':<10}")
     print("-" * 70)
     
@@ -158,7 +158,7 @@ def compare_datasets():
                   f"{stats['avg_interactions_per_user']:<10.2f}")
     
     # Feature characteristics comparison
-    print(f"\n🖼️  IMAGE FEATURE CHARACTERISTICS:")
+    print(f"\nIMAGE FEATURE CHARACTERISTICS:")
     print(f"{'Dataset':<10} {'Dim':<6} {'Mean':<10} {'Std':<10} {'Sparsity':<10} {'Min':<10} {'Max':<10}")
     print("-" * 80)
     
@@ -170,7 +170,7 @@ def compare_datasets():
                   f"{img['std']:<10.4f} {img['sparsity']:<10.4f} "
                   f"{img['min']:<10.4f} {img['max']:<10.4f}")
     
-    print(f"\n📝 TEXT FEATURE CHARACTERISTICS:")
+    print(f"\nTEXT FEATURE CHARACTERISTICS:")
     print(f"{'Dataset':<10} {'Dim':<6} {'Mean':<10} {'Std':<10} {'Sparsity':<10} {'Min':<10} {'Max':<10}")
     print("-" * 80)
     
@@ -183,7 +183,7 @@ def compare_datasets():
                   f"{txt['min']:<10.4f} {txt['max']:<10.4f}")
     
     # Correlation analysis
-    print(f"\n🔍 KEY INSIGHTS:")
+    print(f"\nKEY INSIGHTS:")
     
     # Find patterns that correlate with performance
     recall_scores = [performance[d]['recall20'] for d in sorted_datasets]
@@ -211,7 +211,7 @@ def compare_datasets():
             print(f"   {dataset}: Image quality={img_quality:.3f}, Text quality={txt_quality:.3f}, "
                   f"Recall@20={perf['recall20']:.4f}")
     
-    print(f"\n🎯 RECOMMENDATIONS:")
+    print(f"\nRECOMMENDATIONS:")
     print(f"1. Focus on Baby dataset characteristics that lead to 2x gap performance")
     print(f"2. Investigate if Clothing/Sports can benefit from Baby-specific optimizations")
     print(f"3. Consider dataset-specific hyperparameter tuning based on these characteristics")

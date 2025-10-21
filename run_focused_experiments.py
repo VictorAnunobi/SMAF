@@ -235,7 +235,7 @@ def main():
         if result['success'] and result.get('test_results', {}).get('Recall@20', 0) > best_score:
             best_score = result['test_results']['Recall@20']
             best_config = result
-            print(f"🎉 NEW BEST SCORE: Recall@20 = {best_score:.4f}")
+            print(f"NEW BEST SCORE: Recall@20 = {best_score:.4f}")
             print(f"Config: {result['config_updates']}")
         
         # Save intermediate results
@@ -248,12 +248,12 @@ def main():
     print(f"{'='*100}")
     
     for i, result in enumerate(results):
-        status = "✅ SUCCESS" if result['success'] else "❌ FAILED"
+        status = "SUCCESS" if result['success'] else "FAILED"
         score = result.get('test_results', {}).get('Recall@20', 0)
         print(f"Experiment {i+1}: {status} - Recall@20: {score:.4f} - {result['description']}")
     
     if best_config:
-        print(f"\n🏆 BEST CONFIGURATION:")
+        print(f"\nBEST CONFIGURATION:")
         print(f"Recall@20: {best_score:.4f}")
         print(f"Config: {best_config['config_updates']}")
         print(f"Description: {best_config['description']}")

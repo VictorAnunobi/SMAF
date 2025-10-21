@@ -38,18 +38,18 @@ def test_sea_imports():
         from models.SEA import SEA
         print("   ✓ SEA model imported successfully")
         
-        print("\n🎉 All imports successful! The SEA model is ready to use.")
+        print("\nAll imports successful! The SEA model is ready to use.")
         return True
         
     except ImportError as e:
-        print(f"\n❌ Import error: {e}")
+        print(f"\nERROR: Import error: {e}")
         print("\nTroubleshooting tips:")
         print("- Make sure you're running this script from the SEA-main directory")
         print("- Check that all required files exist in the src/ directory")
         print("- Verify that Python can find the src directory")
         return False
     except Exception as e:
-        print(f"\n❌ Unexpected error: {e}")
+        print(f"\nERROR: Unexpected error: {e}")
         return False
 
 def create_mock_dataset():
@@ -244,7 +244,7 @@ def test_sea_model_creation():
         return True
         
     except Exception as e:
-        print(f"\n❌ Model creation error: {e}")
+        print(f"\nERROR: Model creation error: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -319,12 +319,12 @@ def test_svd_completion_trigger():
             print(f"Completed matrix nnz: {completed_matrix.nnz}")
             print("   ✓ SVD completion function works")
         else:
-            print("   ⚠️  SVD completion returned None")
+            print("   WARNING: SVD completion returned None")
         
         return True
         
     except Exception as e:
-        print(f"\n❌ SVD completion test error: {e}")
+        print(f"\nERROR: SVD completion test error: {e}")
         import traceback
         traceback.print_exc()
         return False
@@ -347,17 +347,17 @@ if __name__ == "__main__":
             
             if svd_ok:
                 print("\n" + "=" * 60)
-                print("🎉 ALL TESTS PASSED! The SEA model is working correctly.")
+                print("ALL TESTS PASSED! The SEA model is working correctly.")
                 print("=" * 60)
             else:
                 print("\n" + "=" * 60)
-                print("⚠️  Imports and model creation work, but SVD completion trigger test failed.")
+                print("WARNING: Imports and model creation work, but SVD completion trigger test failed.")
                 print("=" * 60)
         else:
             print("\n" + "=" * 60)
-            print("⚠️  Imports work but model creation failed.")
+            print("WARNING: Imports work but model creation failed.")
             print("=" * 60)
     else:
         print("\n" + "=" * 60)
-        print("❌ Import tests failed. Please fix import issues first.")
+        print("ERROR: Import tests failed. Please fix import issues first.")
         print("=" * 60)

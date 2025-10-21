@@ -14,7 +14,7 @@ def analyze_feature_importance():
     """Analyze the relative importance of image vs text features"""
     
     print("="*80)
-    print("🔍 MULTIMODAL FEATURE USAGE ANALYSIS")
+    print("MULTIMODAL FEATURE USAGE ANALYSIS")
     print("Investigating how SEA uses image vs text features")
     print("="*80)
     
@@ -28,9 +28,9 @@ def analyze_feature_importance():
     results = {}
     
     for config in configs_to_test:
-        print(f"\n🧪 Testing: {config['name']}")
-        print(f"   Image features: {'✅' if config['use_image'] else '❌'}")
-        print(f"   Text features: {'✅' if config['use_text'] else '❌'}")
+        print(f"\nTesting: {config['name']}")
+        print(f"   Image features: {'YES' if config['use_image'] else 'NO'}")
+        print(f"   Text features: {'YES' if config['use_text'] else 'NO'}")
         
         # Create modified dataset with selective features
         img_feat_backup = None
@@ -38,52 +38,52 @@ def analyze_feature_importance():
         
         if not config['use_image']:
             # Zero out image features
-            print("   🔧 Zeroing out image features...")
+            print("   Zeroing out image features...")
             img_feat = np.load('data/clothing/image_feat.npy')
             img_feat_backup = img_feat.copy()
             np.save('data/clothing/image_feat.npy', np.zeros_like(img_feat))
             
         if not config['use_text']:
             # Zero out text features  
-            print("   🔧 Zeroing out text features...")
+            print("   Zeroing out text features...")
             text_feat = np.load('data/clothing/text_feat.npy')
             text_feat_backup = text_feat.copy()
             np.save('data/clothing/text_feat.npy', np.zeros_like(text_feat))
         
         try:
             # Run experiment with modified features using subprocess
-            print("   🚀 Running SEA experiment...")
+            print("   Running SEA experiment...")
             start_time = time.time()
             result = run_sea_experiment_subprocess()
             elapsed = time.time() - start_time
-            print(f"   ⏱️  Completed in {elapsed:.1f}s")
+            print(f"   Completed in {elapsed:.1f}s")
             
             results[config['name']] = result
             recall_val = result.get('recall@20', 'N/A')
             ndcg_val = result.get('ndcg@20', 'N/A')
             if isinstance(recall_val, (int, float)) and isinstance(ndcg_val, (int, float)):
-                print(f"   📊 Result: Recall@20={recall_val:.4f}, NDCG@20={ndcg_val:.4f}")
+                print(f"   Result: Recall@20={recall_val:.4f}, NDCG@20={ndcg_val:.4f}")
             else:
-                print(f"   📊 Result: Recall@20={recall_val}, NDCG@20={ndcg_val}")
+                print(f"   Result: Recall@20={recall_val}, NDCG@20={ndcg_val}")
                 if 'error' in result:
-                    print(f"   ⚠️  Error details: {result['error']}")
+                    print(f"   WARNING: Error details: {result['error']}")
             
         except Exception as e:
-            print(f"   ❌ Exception: {str(e)}")
+            print(f"   ERROR: Exception: {str(e)}")
             results[config['name']] = {"error": str(e)}
         
         finally:
             # Restore original features
             if img_feat_backup is not None:
-                print("   🔄 Restoring image features...")
+                print("   Restoring image features...")
                 np.save('data/clothing/image_feat.npy', img_feat_backup)
             if text_feat_backup is not None:
-                print("   🔄 Restoring text features...")
+                print("   Restoring text features...")
                 np.save('data/clothing/text_feat.npy', text_feat_backup)
     
     # Analysis
     print(f"\n{'='*60}")
-    print("📈 FEATURE CONTRIBUTION ANALYSIS")
+    print("FEATURE CONTRIBUTION ANALYSIS")
     print(f"{'='*60}")
     
     if "Full Multimodal" in results and "Text Only" in results:
@@ -95,7 +95,7 @@ def analyze_feature_importance():
             text_recall = text_result.get("recall@20", 0)
             image_contribution = full_recall - text_recall
             
-            print(f"🔍 Image Feature Contribution:")
+            print(f"Image Feature Contribution:")
             print(f"   Full Multimodal: {full_recall:.4f}")
             print(f"   Text Only: {text_recall:.4f}")
             print(f"   Image Contribution: {image_contribution:.4f}")
@@ -105,18 +105,18 @@ def analyze_feature_importance():
                 print(f"   Relative Contribution: {contribution_pct:.1f}%")
             
             if abs(image_contribution) < 0.001:
-                print("   🚨 INSIGHT: Image features contribute almost nothing!")
+                print("   INSIGHT: Image features contribute almost nothing!")
             elif image_contribution < 0:
-                print("   🚨 INSIGHT: Image features actually hurt performance!")
+                print("   INSIGHT: Image features actually hurt performance!")
             else:
-                print("   ✅ INSIGHT: Image features provide meaningful contribution")
+                print("   INSIGHT: Image features provide meaningful contribution")
         else:
-            print("🔍 Analysis incomplete due to errors in experiments")
+            print("Analysis incomplete due to errors in experiments")
             for name, result in results.items():
                 if 'error' in result:
                     print(f"   {name}: {result['error']}")
     else:
-        print("🔍 Cannot analyze - missing required experiment results")
+        print("Cannot analyze - missing required experiment results")
     
     return results
 
@@ -185,7 +185,7 @@ def run_sea_experiment_subprocess():
 if __name__ == "__main__":
     results = analyze_feature_importance()
     
-    print(f"\n🎯 CONCLUSIONS:")
+    print(f"\nCONCLUSIONS:")
     print(f"1. If text-only performs similarly to full multimodal:")
     print(f"   → Image features are not contributing meaningfully")
     print(f"2. If image-only performs much worse:")
