@@ -141,13 +141,14 @@ We use three Amazon review datasets with pre-extracted multimodal features for o
 ## Dataset Structure
 
 Each dataset directory follows this structure:
-
+```
 data/{dataset}/
 ├── {dataset}.inter          # User-item interactions (train/val/test splits)
 ├── text_feat.npy            # Text features (Sentence-BERT embeddings, 384d)
 ├── image_feat.npy           # Image features (ResNet-50 features, 4096d)
 ├── u_id_mapping.csv         # User ID to index mapping
 └── i_id_mapping.csv         # Item ID to index mapping
+```
 
 ## Download Datasets
 
