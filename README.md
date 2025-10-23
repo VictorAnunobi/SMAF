@@ -151,7 +151,7 @@ We use three Amazon review datasets with pre-extracted multimodal features for o
 
 ### Image Features
 
--   **Model**: ResNet-50 visual features (4096 dimensions)
+-   **Model**: ResNet-50 visual features
 -   **Extraction**: From product images using pre-trained ResNet-50
 -   **Layer**: Final layer features before classification
 -   **Representation**: Visual appearance and attributes
@@ -335,7 +335,10 @@ The Systematic Multimodal Ablation Framework (SMAF) is implemented through the e
 Our implementation uses feature masking rather than architectural changes:
 
 ```python
-# Example: Text-only ablation (from test_text_only.py)# Zero out image features while keeping text features intactimage_features = np.zeros_like(original_image_features)
+# Example: Text-only ablation (from test_text_only.py)
+
+# Zero out image features while keeping text features intact
+image_features = np.zeros_like(original_image_features)
 ```
 
 **Why Feature Masking?**This approach ensures:
