@@ -85,19 +85,37 @@ Based on NVIDIA RTX 3090:
 ### Step 1: Extract the Supplementary Materials
 
 ```bash
-# Extract the archiveunzip SMAF_PROJECT-supplementary.zipcd SMAF_PROJECT
+# Extract the archive
+unzip SMAF-main.zip
+cd SMAF-main
 ```
 
 ### Step 2: Create Python Environment (Recommended)
 
 ```bash
-# Using conda (recommended)conda create -n smaf python=3.7.11conda activate smaf# Or using venvpython3.7 -m venv smaf_envsource smaf_env/bin/activate  # On Linux/macOS# smaf_envScriptsactivate  # On Windows
+# Using conda (recommended)
+conda create -n smaf python=3.7.11
+conda activate smaf
+
+# Or using venv
+python3.7 -m venv smaf_env
+source smaf_env/bin/activate
+
+# On Linux/macOS#
+smaf_envScriptsactivate
 ```
 
 ### Step 3: Install Dependencies
 
 ```bash
-# Install all required packagespip install -r requirements.txt# Verify PyTorch installationpython -c "import torch; print('PyTorch version:', torch.__version__)"python -c "import torch; print('CUDA available:', torch.cuda.is_available())"
+# Install all required packages
+pip install -r requirements.txt
+
+# Verify PyTorch installation
+python -c "import torch;
+print('PyTorch version:', torch.__version__)
+python -c "import torch;
+print('CUDA available:', torch.cuda.is_available())"
 ```
 
 #### Note: The requirements.txt specifies:
