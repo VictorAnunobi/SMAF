@@ -1,10 +1,4 @@
 #!/usr/bin/env python3
-"""
-SEA Model Optimization Script
-Systematically tune hyperparameters to achieve paper-level performance
-Target: Recall@20 ≈ 0.0953 for clothing dataset
-"""
-
 import os
 import sys
 import argparse

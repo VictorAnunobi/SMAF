@@ -1,8 +1,4 @@
 #!/usr/bin/env python3
-"""
-Test script to import and verify the SEA model works correctly.
-This script properly sets up the Python path to handle relative imports.
-"""
 import sys
 import os
 

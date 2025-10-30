@@ -1,9 +1,4 @@
 #!/usr/bin/env python3
-"""
-Test SEA performance with TEXT ONLY features (zero out image features)
-This will help us understand if image features contribute meaningfully
-"""
-
 import numpy as np
 import shutil
 import os

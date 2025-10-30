@@ -1,11 +1,4 @@
 #!/usr/bin/env python3
-"""
-Systematic hyperparameter search to bridge the 10x performance gap.
-Current best: Recall@20 ≈ 0.009, Target: Recall@20 ≈ 0.095
-
-Focus on parameters that could have 2-5x impact rather than 10-20% improvements.
-"""
-
 import os
 import sys
 import subprocess
