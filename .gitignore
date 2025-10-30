@@ -31,3 +31,12 @@ src/log/
 # OS
 .DS_Store
 Thumbs.db
+
+
+#Ignore vscode AI rules
+.github/instructions/codacy.instructions.md
+
+# Draft and supplementary files
+METHODOLOGY_PAPER_DRAFT.md
+PROJECT_PROGRESS_REPORT.md
+SUPPLEMENTARY_README.md
