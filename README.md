@@ -162,8 +162,8 @@ Each dataset directory follows this structure:
 ```
 data/{dataset}/
 ├── {dataset}.inter          # User-item interactions (train/val/test splits)
-├── text_feat.npy            # Text features (Sentence-BERT embeddings, 384d)
-├── image_feat.npy           # Image features (ResNet-50 features, 4096d)
+├── text_feat.npy            # Text features (Sentence-BERT embeddings)
+├── image_feat.npy           # Image features (ResNet-50 features)
 ├── u_id_mapping.csv         # User ID to index mapping
 └── i_id_mapping.csv         # Item ID to index mapping
 ```
@@ -386,8 +386,8 @@ Based on performance retention when using only a single modality:
 | Dataset | Full Multimodal (Recall@20) | Text-Only (Recall@20) | Image Contribution (Recall@20) | Classification |
 |---------|-----------------------------|----------------------|-------------------------------|----------------|
 | Baby | 0.0474 | 0.0467 | +1.5% | Pseudo-Multimodal |
-| Clothing | 0.0441 | 0.0438 | -0.8% | Pseudo-Multimodal |
-| Sports | 0.0695 | 0.0689 | (+0.7%) | Pseudo-Multimodal |
+| Clothing | 0.0131 | 0.0132 | -0.8% | Pseudo-Multimodal |
+| Sports | 0.0273 | 0.0271 | (+0.7%) | Pseudo-Multimodal |
 
 ### Implications:
 
@@ -773,7 +773,7 @@ cd src
 python main.py --dataset baby
 
 # Or add to PYTHONPATH
-export PYTHONPATH="${PYTHONPATH}:/path/to/SMAF_PROJECT/src"
+export PYTHONPATH="${PYTHONPATH}:/path/to/SMAF-main/src"
 ```
 
 **Issue 4: Different Results****Possible causes:**
