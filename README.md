@@ -464,8 +464,8 @@ data/
 │
 ├── baby/                              # Baby Products Dataset
 │   ├── baby.inter                     # User-item interactions
-│   ├── text_feat.npy                  # Sentence-BERT embeddings (384d)
-│   ├── image_feat.npy                 # ResNet-50 features (4096d)
+│   ├── text_feat.npy                  # Sentence-BERT embeddings
+│   ├── image_feat.npy                 # ResNet-50 features 
 │   ├── u_id_mapping.csv               # User ID mappings
 │   └── i_id_mapping.csv               # Item ID mappings
 │
@@ -525,8 +525,8 @@ Root level utility scripts:
 | `src/common/trainer.py` | Training loop, validation, and checkpointing |
 | `src/utils/dataloader.py` | Handles data loading and batch preparation |
 | `src/configs/*.yaml` | All configuration files for reproducibility |
-| `data/*/text_feat.npy` | Sentence-BERT embeddings (768d → 384d) |
-| `data/*/image_feat.npy` | ResNet-50 visual features (4096d) |
+| `data/*/text_feat.npy` | Sentence-BERT embeddings |
+| `data/*/image_feat.npy` | ResNet-50 visual features |
 | `test_text_only.py` | Critical ablation script for text-only experiments |
 | `run_focused_experiments.py` | Automated multi-seed experimental pipeline |
 | `analyze_performance_gap.py` | Statistical analysis with t-tests and effect sizes |
