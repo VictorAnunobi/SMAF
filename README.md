@@ -2,7 +2,7 @@
 
 A Systematic Framework for Testing Multimodal Feature Contribution in Recommendation Systems
 
-Paper Authors: Jifang Wang and Anunobi Victor Chibueze
+Paper Authors: Anunobi Victor Chibueze and Jifang Wang
 
 Conference: The 3rd International Conference on Networks, Communications and Intelligent Computing, NCIC 2025
 
